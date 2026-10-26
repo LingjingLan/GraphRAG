@@ -1,0 +1,81 @@
+﻿scope,group,dimension,level,alpha,n_units,n_units_single_rater,pairwise_agreement,n_raters
+all,,clarity,ordinal,0.4003270539166247,2015,0,0.676923076923077,2
+all,,clarity,interval,0.4343378861111189,2015,0,0.676923076923077,2
+all,,esg_relevance,ordinal,0.5960743583769945,2015,0,0.852605459057072,2
+all,,esg_relevance,interval,0.7117292587528221,2015,0,0.852605459057072,2
+all,,answerability,ordinal,0.2769320994277471,2015,0,0.7851116625310174,2
+all,,answerability,interval,0.2878045927474441,2015,0,0.7851116625310174,2
+all,,answer_correctness,ordinal,0.2850185978962233,2015,0,0.7052109181141439,2
+all,,answer_correctness,interval,0.2609364986486109,2015,0,0.7052109181141439,2
+all,,evidence_support,ordinal,0.14344151365913715,2015,0,0.4079404466501241,2
+all,,evidence_support,interval,0.21863094372499514,2015,0,0.4079404466501241,2
+all,,question_type_fit,ordinal,0.6663215232586543,2015,0,0.8124069478908189,2
+all,,question_type_fit,interval,0.6448707966681847,2015,0,0.8124069478908189,2
+all,,type_specific_validity,ordinal,0.5139252734413504,2015,0,0.6138957816377171,2
+all,,type_specific_validity,interval,0.5096538506637124,2015,0,0.6138957816377171,2
+all,,(all dimensions),ordinal,0.46491059691985315,14105,0,0.6934420418291386,2
+all,,(all dimensions),interval,0.49511652398719985,14105,0,0.6934420418291386,2
+by_group,Fact Retrieval,clarity,ordinal,0.4565731741745169,958,0,0.7025052192066806,2
+by_group,Fact Retrieval,clarity,interval,0.49367161365230094,958,0,0.7025052192066806,2
+by_group,Fact Retrieval,esg_relevance,ordinal,0.5198149752524204,958,0,0.824634655532359,2
+by_group,Fact Retrieval,esg_relevance,interval,0.6257202198380662,958,0,0.824634655532359,2
+by_group,Fact Retrieval,answerability,ordinal,0.4599476453782374,958,0,0.8496868475991649,2
+by_group,Fact Retrieval,answerability,interval,0.43443939235459517,958,0,0.8496868475991649,2
+by_group,Fact Retrieval,answer_correctness,ordinal,0.3210838043266241,958,0,0.7505219206680585,2
+by_group,Fact Retrieval,answer_correctness,interval,0.26813036201420637,958,0,0.7505219206680585,2
+by_group,Fact Retrieval,evidence_support,ordinal,-0.03217214325794315,958,0,0.3747390396659708,2
+by_group,Fact Retrieval,evidence_support,interval,0.03609781592830108,958,0,0.3747390396659708,2
+by_group,Fact Retrieval,question_type_fit,ordinal,0.15618112231564318,958,0,0.9217118997912317,2
+by_group,Fact Retrieval,question_type_fit,interval,0.1652136006974716,958,0,0.9217118997912317,2
+by_group,Fact Retrieval,type_specific_validity,ordinal,0.45104608612804087,958,0,0.697286012526096,2
+by_group,Fact Retrieval,type_specific_validity,interval,0.47426506923778045,958,0,0.697286012526096,2
+by_group,Fact Retrieval,(all dimensions),ordinal,0.3707615373384221,6706,0,0.7315836564270802,2
+by_group,Fact Retrieval,(all dimensions),interval,0.4129072145848979,6706,0,0.7315836564270802,2
+by_group,Contextual Summarize,clarity,ordinal,0.16939443535188203,368,0,0.842391304347826,2
+by_group,Contextual Summarize,clarity,interval,0.16939443535188203,368,0,0.842391304347826,2
+by_group,Contextual Summarize,esg_relevance,ordinal,0.8658903083171112,368,0,0.9483695652173914,2
+by_group,Contextual Summarize,esg_relevance,interval,0.9278842429782026,368,0,0.9483695652173914,2
+by_group,Contextual Summarize,answerability,ordinal,-0.04403409090909083,368,0,0.6195652173913043,2
+by_group,Contextual Summarize,answerability,interval,-0.04403409090909083,368,0,0.6195652173913043,2
+by_group,Contextual Summarize,answer_correctness,ordinal,0.1193638393887525,368,0,0.5461956521739131,2
+by_group,Contextual Summarize,answer_correctness,interval,0.12726188108967984,368,0,0.5461956521739131,2
+by_group,Contextual Summarize,evidence_support,ordinal,0.5980789240026062,368,0,0.6766304347826086,2
+by_group,Contextual Summarize,evidence_support,interval,0.5876076345533268,368,0,0.6766304347826086,2
+by_group,Contextual Summarize,question_type_fit,ordinal,0.16902837937234372,368,0,0.8532608695652174,2
+by_group,Contextual Summarize,question_type_fit,interval,0.15993262617553283,368,0,0.8532608695652174,2
+by_group,Contextual Summarize,type_specific_validity,ordinal,-0.07508786018215496,368,0,0.3532608695652174,2
+by_group,Contextual Summarize,type_specific_validity,interval,-0.08862075084286047,368,0,0.3532608695652174,2
+by_group,Contextual Summarize,(all dimensions),ordinal,0.44792521716133393,2576,0,0.6913819875776398,2
+by_group,Contextual Summarize,(all dimensions),interval,0.5080900220237119,2576,0,0.6913819875776398,2
+by_group,Complex Reasoning,clarity,ordinal,0.2955993190153776,616,0,0.5081168831168831,2
+by_group,Complex Reasoning,clarity,interval,0.3114146056005921,616,0,0.5081168831168831,2
+by_group,Complex Reasoning,esg_relevance,ordinal,0.5313073503433658,616,0,0.827922077922078,2
+by_group,Complex Reasoning,esg_relevance,interval,0.6652259637331365,616,0,0.827922077922078,2
+by_group,Complex Reasoning,answerability,ordinal,0.3051469580542394,616,0,0.7938311688311688,2
+by_group,Complex Reasoning,answerability,interval,0.2859872394145142,616,0,0.7938311688311688,2
+by_group,Complex Reasoning,answer_correctness,ordinal,0.37057877225324387,616,0,0.7548701298701299,2
+by_group,Complex Reasoning,answer_correctness,interval,0.37420490756469216,616,0,0.7548701298701299,2
+by_group,Complex Reasoning,evidence_support,ordinal,-0.11318623388617377,616,0,0.2987012987012987,2
+by_group,Complex Reasoning,evidence_support,interval,-0.056736146065323956,616,0,0.2987012987012987,2
+by_group,Complex Reasoning,question_type_fit,ordinal,0.3395362861800625,616,0,0.5957792207792207,2
+by_group,Complex Reasoning,question_type_fit,interval,0.32885566583682024,616,0,0.5957792207792207,2
+by_group,Complex Reasoning,type_specific_validity,ordinal,0.5512924578536812,616,0,0.6704545454545454,2
+by_group,Complex Reasoning,type_specific_validity,interval,0.5336739921666269,616,0,0.6704545454545454,2
+by_group,Complex Reasoning,(all dimensions),ordinal,0.5175253075720596,4312,0,0.6356679035250464,2
+by_group,Complex Reasoning,(all dimensions),interval,0.5351085895805306,4312,0,0.6356679035250464,2
+by_group,Creative Generation,clarity,ordinal,-0.028368794326241176,73,0,0.9315068493150684,2
+by_group,Creative Generation,clarity,interval,-0.028368794326241176,73,0,0.9315068493150684,2
+by_group,Creative Generation,esg_relevance,ordinal,0.942600170342211,73,0,0.9452054794520548,2
+by_group,Creative Generation,esg_relevance,interval,0.920285871357889,73,0,0.9452054794520548,2
+by_group,Creative Generation,answerability,ordinal,-0.08948087431693974,73,0,0.6986301369863014,2
+by_group,Creative Generation,answerability,interval,-0.08948087431693974,73,0,0.6986301369863014,2
+by_group,Creative Generation,answer_correctness,ordinal,-0.05496008923280704,73,0,0.4931506849315068,2
+by_group,Creative Generation,answer_correctness,interval,-0.06394129979035634,73,0,0.4931506849315068,2
+by_group,Creative Generation,evidence_support,ordinal,0.12605266539116577,73,0,0.410958904109589,2
+by_group,Creative Generation,evidence_support,interval,0.1268687707641194,73,0,0.410958904109589,2
+by_group,Creative Generation,question_type_fit,ordinal,,73,0,1.0,2
+by_group,Creative Generation,question_type_fit,interval,,73,0,1.0,2
+by_group,Creative Generation,type_specific_validity,ordinal,-0.06245682987558743,73,0,0.3561643835616438,2
+by_group,Creative Generation,type_specific_validity,interval,-0.06987847222222232,73,0,0.3561643835616438,2
+by_group,Creative Generation,(all dimensions),ordinal,0.4319538780372184,511,0,0.6908023483365949,2
+by_group,Creative Generation,(all dimensions),interval,0.42276013738172746,511,0,0.6908023483365949,2

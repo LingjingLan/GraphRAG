@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hypergraphrag"
+version = "1.0.6"
+description = "HyperGraphRAG (LHRLAB / NeurIPS 2025) — vendored for EulerESG"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "openai",
+  "numpy",
+  "tiktoken",
+  "networkx",
+  "nano-vectordb",
+  "tenacity",
+  "xxhash",
+  "aiohttp",
+  "tqdm",
+]
+
+[tool.setuptools.packages.find]
+include = ["hypergraphrag*"]
