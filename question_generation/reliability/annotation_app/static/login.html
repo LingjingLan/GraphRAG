@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ESG QG Login</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="card login-box">
+      <h1 style="margin-top:0">ESG QG Annotation</h1>
+      <p class="meta">Sign in to continue scoring. Progress is saved on the server.</p>
+      <div id="err" class="err"></div>
+      <label class="field-label">Username</label>
+      <input id="username" autocomplete="username" />
+      <label class="field-label">Password</label>
+      <input id="password" type="password" autocomplete="current-password" />
+      <button class="btn btn-primary" id="loginBtn" style="width:100%">Login</button>
+      <p class="hint" style="margin-top:12px">
+        <a href="/register.html">No account? Register</a>
+      </p>
+      <p class="hint">Admin accounts are not created by registration.</p>
+    </div>
+  </div>
+  <script>
+    async function go() {
+      const err = document.getElementById('err');
+      err.textContent = '';
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password}),
+        credentials: 'same-origin',
+      });
+      if (!res.ok) {
+        const t = await res.json().catch(() => ({}));
+        err.textContent = t.detail || 'Login failed';
+        return;
+      }
+      const data = await res.json();
+      if (data.user.role === 'admin') location.href = '/admin.html';
+      else location.href = '/annotate.html';
+    }
+    document.getElementById('loginBtn').onclick = go;
+    document.getElementById('password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') go();
+    });
+    fetch('/api/me', {credentials:'same-origin'}).then(r => {
+      if (!r.ok) return;
+      return r.json().then(u => {
+        location.href = u.role === 'admin' ? '/admin.html' : '/annotate.html';
+      });
+    });
+  </script>
+</body>
+</html>

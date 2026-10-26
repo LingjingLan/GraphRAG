@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · ESG QG</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>Annotation progress</h1>
+        <div class="meta" id="who"></div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-ok" href="/api/admin/export.csv">Export CSV</a>
+        <button class="btn btn-ghost" id="refreshBtn">Refresh</button>
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field-label">Total questions</div>
+      <div class="field-value" id="total"></div>
+    </div>
+
+    <div class="card">
+      <div class="field-label label-scores" style="margin-bottom:10px">Create annotator</div>
+      <p class="hint">No public sign-up. Admin creates accounts here, then give username/password to raters.</p>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <div class="field-label">Username</div>
+          <input id="newUser" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:8px" />
+        </div>
+        <div>
+          <div class="field-label">Display name</div>
+          <input id="newDisplay" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:8px" />
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="field-label">Password</div>
+        <input id="newPass" type="password" style="width:100%;max-width:420px;padding:8px;border:1px solid #e5e7eb;border-radius:8px" />
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="createBtn">Create user</button>
+        <span class="hint" id="createMsg"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Annotator</th>
+            <th>Completed</th>
+            <th>Progress</th>
+            <th>Last index</th>
+            <th>Last active</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function api(url, opts) {
+      const res = await fetch(url, {credentials:'same-origin', ...opts});
+      if (res.status === 401 || res.status === 403) {
+        location.href = '/login.html';
+        throw new Error('auth');
+      }
+      if (!res.ok) {
+        const t = await res.json().catch(() => ({}));
+        throw new Error(t.detail || await res.text());
+      }
+      return res.json();
+    }
+
+    async function load() {
+      const me = await api('/api/me');
+      if (me.role !== 'admin') { location.href = '/annotate.html'; return; }
+      document.getElementById('who').textContent = `${me.display_name} (${me.username})`;
+      const data = await api('/api/admin/progress');
+      document.getElementById('total').textContent = data.total_questions;
+      const tb = document.getElementById('tbody');
+      tb.innerHTML = '';
+      data.annotators.forEach(a => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${a.display_name} <span class="meta">(${a.username})</span></td>
+          <td>${a.completed} / ${a.total}</td>
+          <td>${a.pct}%</td>
+          <td>${a.last_question_index}</td>
+          <td>${a.last_active_at || '-'}</td>`;
+        tb.appendChild(tr);
+      });
+    }
+
+    document.getElementById('createBtn').onclick = async () => {
+      const msg = document.getElementById('createMsg');
+      msg.textContent = '';
+      try {
+        const body = {
+          username: document.getElementById('newUser').value.trim(),
+          display_name: document.getElementById('newDisplay').value.trim() || undefined,
+          password: document.getElementById('newPass').value,
+          role: 'annotator',
+        };
+        await api('/api/admin/users', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(body),
+        });
+        msg.textContent = `Created ${body.username}. Give them this username/password to log in.`;
+        document.getElementById('newPass').value = '';
+        await load();
+      } catch (e) {
+        msg.textContent = e.message || String(e);
+      }
+    };
+
+    document.getElementById('refreshBtn').onclick = load;
+    document.getElementById('logoutBtn').onclick = async () => {
+      await fetch('/api/auth/logout', {method:'POST', credentials:'same-origin'});
+      location.href = '/login.html';
+    };
+    load().catch(console.error);
+  </script>
+</body>
+</html>

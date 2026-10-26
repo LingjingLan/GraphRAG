@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register · ESG QG</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="card login-box">
+      <h1 style="margin-top:0">Create account</h1>
+      <p class="meta">Register to start scoring. Progress is saved on the server.</p>
+      <div id="err" class="err"></div>
+      <label class="field-label">Username</label>
+      <input id="username" autocomplete="username" />
+      <label class="field-label">Display name (optional)</label>
+      <input id="display" autocomplete="nickname" />
+      <label class="field-label">Password</label>
+      <input id="password" type="password" autocomplete="new-password" />
+      <div id="inviteWrap" style="display:none">
+        <label class="field-label">Invite code</label>
+        <input id="invite" autocomplete="off" />
+      </div>
+      <button class="btn btn-primary" id="regBtn" style="width:100%;margin-top:8px">Register</button>
+      <p class="hint"><a href="/login.html">Already have an account? Login</a></p>
+    </div>
+  </div>
+  <script>
+    async function init() {
+      const cfg = await fetch('/api/auth/register_config').then(r => r.json());
+      if (!cfg.enabled) {
+        document.getElementById('err').textContent = 'Public registration is disabled.';
+        document.getElementById('regBtn').disabled = true;
+        return;
+      }
+      if (cfg.invite_required) {
+        document.getElementById('inviteWrap').style.display = 'block';
+      }
+    }
+
+    async function go() {
+      const err = document.getElementById('err');
+      err.textContent = '';
+      const body = {
+        username: document.getElementById('username').value.trim(),
+        display_name: document.getElementById('display').value.trim() || undefined,
+        password: document.getElementById('password').value,
+        invite_code: document.getElementById('invite').value.trim() || undefined,
+      };
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body),
+        credentials: 'same-origin',
+      });
+      if (!res.ok) {
+        const t = await res.json().catch(() => ({}));
+        err.textContent = t.detail || 'Registration failed';
+        return;
+      }
+      location.href = '/annotate.html';
+    }
+
+    document.getElementById('regBtn').onclick = go;
+    document.getElementById('password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') go();
+    });
+    init().catch(console.error);
+  </script>
+</body>
+</html>

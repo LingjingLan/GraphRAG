@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: esg-qg-annotation
+    runtime: python
+    rootDir: esg_qg_annotation
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANNOTATION_SESSION_SECRET
+        generateValue: true
+      - key: ANNOTATION_PASSWORD_ANNOTATOR1
+        sync: false
+      - key: ANNOTATION_PASSWORD_ANNOTATOR2
+        sync: false
+      - key: ANNOTATION_PASSWORD_ANNOTATOR3
+        sync: false
+      - key: ANNOTATION_PASSWORD_ADMIN
+        sync: false

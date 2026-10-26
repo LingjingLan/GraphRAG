@@ -1,0 +1,8 @@
+data/annotation.db
+data/annotations.json
+data/scores/
+__pycache__/
+*.pyc
+.venv/
+venv/
+secrets.json

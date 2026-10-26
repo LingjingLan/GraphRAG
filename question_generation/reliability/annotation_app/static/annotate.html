@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Annotate · ESG QG</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>Question quality scoring</h1>
+        <div class="meta" id="who"></div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-ok" id="exportBtn" href="/api/me/export.csv">Export my CSV</a>
+        <button class="btn btn-ghost" id="jumpBtn">Next incomplete</button>
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <div class="card card-question">
+      <div class="field-label label-question">Question</div>
+      <div class="field-value field-question" id="question"></div>
+      <div class="field-label label-hint" style="margin-top:12px">Type-specific hint</div>
+      <div class="field-value small" id="typeHint"></div>
+    </div>
+
+    <div class="card card-answer">
+      <div class="field-label label-answer">Answer</div>
+      <div class="field-value" id="answer"></div>
+    </div>
+
+    <div class="card card-evidence">
+      <div class="field-label label-evidence">Evidence (passage)</div>
+      <div class="field-value" id="evidence"></div>
+    </div>
+
+    <div class="card card-triple">
+      <div class="field-label label-triple">Evidence triple</div>
+      <div class="field-value small" id="triple"></div>
+    </div>
+
+    <div class="card card-scores">
+      <div class="field-label label-scores" style="margin-bottom:10px">Scores (1–3)</div>
+      <div class="score-grid" id="scoreGrid"></div>
+      <p class="hint" id="saveMsg"></p>
+      <div class="actions">
+        <button class="btn btn-primary" id="prevBtn">Previous</button>
+        <button class="btn btn-danger" id="nextBtn">Next</button>
+        <button class="btn btn-ok" id="saveBtn">Save</button>
+        <div class="progress" id="progress">0 / 0</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DIM_LABELS = {
+      clarity: 'Clarity',
+      esg_relevance: 'ESG Relevance',
+      answerability: 'Answerability',
+      answer_correctness: 'Answer Correctness',
+      evidence_support: 'Evidence Support',
+      question_type_fit: 'Question Type',
+      type_specific_validity: 'Type-specific Validity',
+    };
+    const AUTOSAVE_MS = 10 * 60 * 1000; // 10 minutes
+    const DEBOUNCE_MS = 1500;
+
+    let state = null;
+    let dims = [];
+    let saving = false;
+    let dirty = false;
+    let debounceTimer = null;
+    let lastAutoSaveAt = null;
+
+    function $(id) { return document.getElementById(id); }
+
+    function buildScoreGrid() {
+      const grid = $('scoreGrid');
+      grid.innerHTML = '';
+      dims.forEach(dim => {
+        const col = document.createElement('div');
+        col.className = 'score-col';
+        col.innerHTML = `<h3>${DIM_LABELS[dim] || dim}</h3>`;
+        [3,2,1].forEach(v => {
+          const lab = document.createElement('label');
+          lab.className = 'score-opt';
+          lab.innerHTML = `<input type="radio" name="${dim}" value="${v}" /> <span class="badge s${v}">${v}</span>`;
+          col.appendChild(lab);
+        });
+        grid.appendChild(col);
+      });
+      grid.querySelectorAll('input[type=radio]').forEach(el => {
+        el.addEventListener('change', onScoreChange);
+      });
+    }
+
+    function readScores() {
+      const out = {};
+      for (const d of dims) {
+        const el = document.querySelector(`input[name="${d}"]:checked`);
+        if (!el) return null;
+        out[d] = Number(el.value);
+      }
+      return out;
+    }
+
+    function fillScores(scores) {
+      dims.forEach(d => {
+        document.querySelectorAll(`input[name="${d}"]`).forEach(el => {
+          el.checked = scores && Number(scores[d]) === Number(el.value);
+        });
+      });
+    }
+
+    function statusLine(extra) {
+      const parts = [];
+      if (extra) parts.push(extra);
+      if (lastAutoSaveAt) {
+        parts.push('Last autosave: ' + lastAutoSaveAt.toLocaleTimeString());
+      }
+      parts.push('Resume position is saved on the server.');
+      $('saveMsg').textContent = parts.join(' · ');
+    }
+
+    function render(payload) {
+      state = payload;
+      dirty = false;
+      dims = payload.dims || Object.keys(DIM_LABELS);
+      if (!$('scoreGrid').children.length) buildScoreGrid();
+      else {
+        // rebind not needed if same grid; radios already bound once
+      }
+      const q = payload.question;
+      $('typeHint').textContent = q.type_hint || '';
+      $('evidence').textContent = q.evidence || '';
+      $('triple').textContent = q.evidence_triple || '';
+      $('answer').textContent = q.answer || '';
+      $('question').textContent = q.question || '';
+      fillScores(payload.scores);
+      $('progress').textContent = `${payload.completed} / ${payload.total}  ·  #${payload.seq + 1}`;
+      statusLine(payload.complete ? 'This question is saved.' : 'Please score all 7 dimensions.');
+      $('prevBtn').disabled = payload.seq <= 0;
+      $('nextBtn').disabled = payload.seq >= payload.total - 1;
+    }
+
+    async function api(url, opts={}) {
+      const res = await fetch(url, {credentials:'same-origin', ...opts});
+      if (res.status === 401) {
+        location.href = '/login.html';
+        throw new Error('unauthorized');
+      }
+      if (!res.ok) {
+        const t = await res.json().catch(() => ({}));
+        throw new Error(t.detail || res.statusText);
+      }
+      return res.json();
+    }
+
+    async function loadSeq(seq) {
+      const data = await api(`/api/questions/${seq}`);
+      render(data);
+    }
+
+    async function save(goNext=false, opts={}) {
+      const silent = !!opts.silent;
+      const scores = readScores();
+      if (!scores) {
+        if (!silent) statusLine('Please fill all 7 scores before saving / next.');
+        return false;
+      }
+      if (!state || saving) return false;
+      saving = true;
+      try {
+        const body = {...scores, seq: state.seq};
+        const res = await api(`/api/questions/${state.question.id}/scores`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(body),
+        });
+        dirty = false;
+        lastAutoSaveAt = new Date();
+        if (goNext && state.seq < state.total - 1) {
+          await loadSeq(state.seq + 1);
+        } else if (!silent) {
+          // refresh progress counters without losing message
+          const cur = await api(`/api/questions/${state.seq}`);
+          render(cur);
+          statusLine(opts.auto ? 'Autosaved.' : 'Saved.');
+        } else {
+          $('progress').textContent = `${res.completed} / ${res.total}  ·  #${state.seq + 1}`;
+          statusLine('Autosaved.');
+        }
+        return true;
+      } catch (e) {
+        if (!silent) statusLine('Save failed: ' + e.message);
+        console.error(e);
+        return false;
+      } finally {
+        saving = false;
+      }
+    }
+
+    function onScoreChange() {
+      dirty = true;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (readScores()) save(false, {silent: true, auto: true});
+      }, DEBOUNCE_MS);
+    }
+
+    async function saveIfNeeded() {
+      if (!dirty && state && state.complete) return true;
+      if (!readScores()) return true;
+      return save(false, {silent: true, auto: true});
+    }
+
+    $('prevBtn').onclick = async () => {
+      await saveIfNeeded();
+      if (state.seq > 0) await loadSeq(state.seq - 1);
+    };
+    $('nextBtn').onclick = async () => { await save(true); };
+    $('saveBtn').onclick = async () => { await save(false); };
+    $('jumpBtn').onclick = async () => {
+      await saveIfNeeded();
+      const r = await api('/api/progress/next_incomplete');
+      if (r.done) {
+        statusLine('All questions completed. Nice work.');
+        return;
+      }
+      await loadSeq(r.seq);
+    };
+    $('logoutBtn').onclick = async () => {
+      await saveIfNeeded();
+      await fetch('/api/auth/logout', {method:'POST', credentials:'same-origin'});
+      location.href = '/login.html';
+    };
+
+    // Every 10 minutes: autosave current question if 7 scores filled
+    setInterval(() => {
+      if (readScores()) save(false, {silent: true, auto: true});
+    }, AUTOSAVE_MS);
+
+    // Save when tab hidden / page closing
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') saveIfNeeded();
+    });
+    window.addEventListener('beforeunload', () => {
+      if (!readScores() || !state) return;
+      const body = JSON.stringify({...readScores(), seq: state.seq});
+      // keepalive lets the request finish while the tab closes
+      fetch(`/api/questions/${state.question.id}/scores`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body,
+        credentials: 'same-origin',
+        keepalive: true,
+      }).catch(() => {});
+    });
+
+    (async () => {
+      try {
+        const me = await api('/api/me');
+        if (me.role === 'admin') { location.href = '/admin.html'; return; }
+        $('who').textContent = `${me.display_name} (${me.username}) · autosave every 10 min`;
+        const st = await api('/api/me/state');
+        buildScoreGrid();
+        render(st);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
