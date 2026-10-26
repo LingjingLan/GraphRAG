@@ -7,4 +7,9 @@
 - LightRAG
 - HyperGraphRAG
 
-The full per-question QA responses are intentionally not committed here: they total about 1.1 GB and include files exceeding GitHub's normal 100 MB file limit. Store those with Git LFS, a GitHub Release, Zenodo, or another archival location and link them from this README.
+`raw_qa/` contains the per-question QA responses for the current ten evaluated
+model configurations. These files are tracked with Git LFS because several
+exceed GitHub's normal 100 MB file limit.
+
+The 728 MB historical `_archive_pre_new_method_20260806_182752` directory is
+excluded because it contains superseded experimental runs.
