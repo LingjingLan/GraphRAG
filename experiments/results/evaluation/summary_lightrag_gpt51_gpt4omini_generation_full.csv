@@ -1,0 +1,5 @@
+run,question_type,rouge_score,answer_correctness,coverage_score,faithfulness
+LightRAG-GPT5.1-GPT4omini,Fact Retrieval,0.40041737633136143,0.6528639603890036,,
+LightRAG-GPT5.1-GPT4omini,Complex Reasoning,0.35917849536130686,0.4852998666686752,,
+LightRAG-GPT5.1-GPT4omini,Contextual Summarize,,0.4515628733957657,0.4710560574691009,
+LightRAG-GPT5.1-GPT4omini,Creative Generation,,0.5292188913967093,0.5069308545335941,0.39158328913380963

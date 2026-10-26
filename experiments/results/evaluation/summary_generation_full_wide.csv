@@ -1,0 +1,4 @@
+run,fact__rouge_score,fact__answer_correctness,fact__coverage_score,fact__faithfulness,complex__rouge_score,complex__answer_correctness,complex__coverage_score,complex__faithfulness,summarize__rouge_score,summarize__answer_correctness,summarize__coverage_score,summarize__faithfulness,creative__rouge_score,creative__answer_correctness,creative__coverage_score,creative__faithfulness
+HippoRAG2-GPT4omini-GPT4omini,0.471429,0.620123,,,0.319647,0.485773,,,,0.448838,0.333026,,,0.578317,0.489411,0.403105
+HippoRAG2-GPT5.1-GPT4omini,0.481535,0.639429,,,0.331653,0.477045,,,,0.459223,0.332049,,,0.544289,0.450957,0.418490
+HippoRAG2-GPT5.4-GPT4omini,0.488132,0.646331,,,0.325424,0.482451,,,,0.448295,0.309950,,,0.564517,0.474103,0.428785

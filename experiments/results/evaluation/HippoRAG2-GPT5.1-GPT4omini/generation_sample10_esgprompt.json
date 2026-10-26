@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "model": "gpt-4o-mini",
+    "base_url": "https://api.openai.com/v1",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_base_url": "https://api.openai.com/v1",
+    "n_rows": 2015,
+    "qa_results": "../qa/HippoRAG2-GPT5.1-GPT4omini/results.json",
+    "gold": null,
+    "data_file": null
+  },
+  "Fact Retrieval": {
+    "rouge_score": 0.523975468975469,
+    "answer_correctness": 0.7957546821488054
+  },
+  "Complex Reasoning": {
+    "rouge_score": 0.21519040956907937,
+    "answer_correctness": 0.5160753849378646
+  },
+  "Contextual Summarize": {
+    "answer_correctness": 0.4652283427742332,
+    "coverage_score": 0.3908333333333333
+  },
+  "Creative Generation": {
+    "answer_correctness": 0.5692910182450192,
+    "coverage_score": 0.7895238095238095,
+    "faithfulness": 0.27674603174603174
+  }
+}

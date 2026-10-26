@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "model": "gpt-4o-mini",
+    "base_url": "https://api.openai.com/v1",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_base_url": "https://api.openai.com/v1",
+    "n_rows": 2015,
+    "qa_results": "F:\\LingjingLan\\0.ESG\\newESG\\ESG_KG\\output\\qa\\DualChannel-GPT4omini\\results.json",
+    "gold": null,
+    "data_file": null
+  },
+  "Fact Retrieval": {
+    "rouge_score": 0.2709107632102542,
+    "answer_correctness": 0.41895868806044434
+  },
+  "Complex Reasoning": {
+    "rouge_score": 0.3207700688860586,
+    "answer_correctness": 0.40913679380112544
+  },
+  "Contextual Summarize": {
+    "answer_correctness": 0.33383240999022734,
+    "coverage_score": 0.2086838885751929
+  },
+  "Creative Generation": {
+    "answer_correctness": 0.46947978772005916,
+    "coverage_score": 0.4290171776473146,
+    "faithfulness": 0.5647453369675591
+  }
+}

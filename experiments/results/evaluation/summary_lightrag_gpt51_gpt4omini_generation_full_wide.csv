@@ -1,0 +1,2 @@
+run,fact__rouge_score,fact__answer_correctness,fact__coverage_score,fact__faithfulness,complex__rouge_score,complex__answer_correctness,complex__coverage_score,complex__faithfulness,summarize__rouge_score,summarize__answer_correctness,summarize__coverage_score,summarize__faithfulness,creative__rouge_score,creative__answer_correctness,creative__coverage_score,creative__faithfulness
+LightRAG-GPT5.1-GPT4omini,0.400417,0.652864,,,0.359178,0.485300,,,,0.451563,0.471056,,,0.529219,0.506931,0.391583

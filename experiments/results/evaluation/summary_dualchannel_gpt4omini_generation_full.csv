@@ -1,0 +1,5 @@
+run,question_type,rouge_score,answer_correctness,coverage_score,faithfulness
+DualChannel-GPT4omini,Fact Retrieval,0.2709107632102542,0.41895868806044434,,
+DualChannel-GPT4omini,Complex Reasoning,0.3207700688860586,0.40913679380112544,,
+DualChannel-GPT4omini,Contextual Summarize,,0.33383240999022734,0.2086838885751929,
+DualChannel-GPT4omini,Creative Generation,,0.46947978772005916,0.4290171776473146,0.5647453369675591

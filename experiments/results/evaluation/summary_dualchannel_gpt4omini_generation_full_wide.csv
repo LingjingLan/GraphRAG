@@ -1,0 +1,2 @@
+run,fact__rouge_score,fact__answer_correctness,fact__coverage_score,fact__faithfulness,complex__rouge_score,complex__answer_correctness,complex__coverage_score,complex__faithfulness,summarize__rouge_score,summarize__answer_correctness,summarize__coverage_score,summarize__faithfulness,creative__rouge_score,creative__answer_correctness,creative__coverage_score,creative__faithfulness
+DualChannel-GPT4omini,0.270911,0.418959,,,0.320770,0.409137,,,,0.333832,0.208684,,,0.469480,0.429017,0.564745

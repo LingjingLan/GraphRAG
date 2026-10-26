@@ -1,0 +1,5 @@
+run,question_type,rouge_score,answer_correctness,coverage_score,faithfulness
+HyperGraphRAG-GPT5.1-GPT4omini,Fact Retrieval,0.36766345300677006,0.6434005085793862,,
+HyperGraphRAG-GPT5.1-GPT4omini,Complex Reasoning,0.39635444926422575,0.5205989455649934,,
+HyperGraphRAG-GPT5.1-GPT4omini,Contextual Summarize,,0.45082429756794246,0.317967132505176,
+HyperGraphRAG-GPT5.1-GPT4omini,Creative Generation,,0.5472456695096541,0.5874972820178299,0.9963924963924964
