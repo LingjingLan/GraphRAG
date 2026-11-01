@@ -1,1 +1,2 @@
 experiments/results/raw_qa/** filter=lfs diff=lfs merge=lfs -text
+ESG_KG/output/qa/**/results.json filter=lfs diff=lfs merge=lfs -text
